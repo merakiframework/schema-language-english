@@ -1,0 +1,47 @@
+{
+    "name": "meraki/schema-language-english",
+    "description": "English messages for meraki/schema, as ICU MessageFormat 2 resources. Data only — no PHP.",
+    "type": "library",
+    "keywords": [
+        "schema",
+        "messages",
+        "i18n",
+        "l10n",
+        "messageformat",
+        "mf2",
+        "icu",
+        "english"
+    ],
+    "homepage": "https://github.com/merakiframework/schema-language-english",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nathan",
+            "email": "nbish11@hotmail.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/merakiframework/schema-language-english/issues",
+        "source": "https://github.com/merakiframework/schema-language-english"
+    },
+    "require": {},
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../schema"
+        }
+    ],
+    "require-dev": {
+        "meraki/schema": "@dev"
+    },
+    "scripts": {
+        "test": "schema-lang validate .",
+        "ci": [
+            "@composer validate --strict",
+            "@test"
+        ]
+    },
+    "scripts-descriptions": {
+        "test": "Check every message against what the library actually reports."
+    }
+}

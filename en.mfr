@@ -1,0 +1,184 @@
+# meraki/schema — English
+#
+# What to tell somebody when a field does not accept what they entered. Data, not code: this file
+# is read by every implementation of meraki/schema, so a sentence written here is the sentence a
+# PHP, JavaScript or Rust consumer shows.
+#
+# Messages are ICU MessageFormat 2. Four variables are available and always supplied:
+#
+#   {$field}   the field's name as the schema's author wrote it — `billing`, not "Billing address"
+#   {$kind}    the type, in this language, from a kind.* entry below — "email address"
+#   {$part}    the part of a structured value, from a part.* entry — "postcode"
+#   {$bound}   the limit that applied — a number, a date, or a list already joined
+#
+# Keys are tried most specific first, so a generic sentence can be overridden where it reads badly:
+#
+#   Address.postal_code.postalCodeFormat  →  Address.postalCodeFormat
+#                                         →  postal_code.postalCodeFormat
+#                                         →  postalCodeFormat
+#
+# `vendor/bin/schema-lang keys` lists every key this library asks for.
+
+@locale = en
+
+# =============================================================================================
+# Shape — the value could not be read as this kind of thing at all, so nothing else was checked
+# =============================================================================================
+
+shape.missing = This {$kind} is required.
+shape.unreadable = That is not a valid {$kind}.
+
+Boolean.shape.missing = Answer yes or no.
+Boolean.shape.unreadable = Answer yes or no.
+Collection.shape.unreadable = That is not a list.
+CreditCard.shape.unreadable = Check the card details and try again.
+Enum.shape.unreadable = Choose one of the options offered.
+Money.shape.unreadable = Enter an amount and a currency.
+
+# =============================================================================================
+# Vocabulary — the words the messages above and below are assembled from
+# =============================================================================================
+
+kind.Address = address
+kind.Boolean = yes-or-no answer
+kind.Collection = list
+kind.CreditCard = card
+kind.Date = date
+kind.DateTime = date and time
+kind.Duration = length of time
+kind.EmailAddress = email address
+kind.Enum = choice
+kind.File = file
+kind.Money = amount
+kind.Name = name
+kind.Number = number
+kind.Password = password
+kind.PhoneNumber = phone number
+kind.Text = text
+kind.Time = time
+kind.Uri = web address
+kind.Uuid = identifier
+
+part.administrative_area = state or region
+part.amount = amount
+part.country = country
+part.currency = currency
+part.dependent_locality = district
+part.domain = domain
+part.e164 = number
+part.expiry = expiry date
+part.line1 = street address
+part.line2 = second address line
+part.local_part = name before the @
+part.locality = city or town
+part.name = name
+part.number = number
+part.organization = organization
+part.postal_code = postal code
+part.security_code = security code
+part.size = size
+part.type = type
+
+# MessageFormat 2 has no :list function, so the library joins a list-valued bound using these.
+# They are quoted literals because the spaces are the point and a resource format trims its values.
+list.separator = {|, |}
+list.lastSeparator = {| or |}
+
+bound.true = yes
+bound.false = no
+
+# =============================================================================================
+# Constraints — the value was read, and then found wanting
+# =============================================================================================
+
+# -- Length and size --------------------------------------------------------------------------
+
+minLength = Use at least {$bound} characters.
+maxLength = Use no more than {$bound} characters.
+minSize = That file is smaller than {$bound} bytes.
+maxSize = That file is larger than {$bound} bytes.
+
+# -- Magnitude --------------------------------------------------------------------------------
+
+minValue = Enter {$bound} or more.
+maxValue = Enter {$bound} or less.
+minAmount = Enter {$bound} or more.
+maxAmount = Enter {$bound} or less.
+step = Enter a {$kind} in steps of {$bound}.
+scale = Use no more than {$bound} decimal places.
+maxPrecision = Use no more than {$bound} significant digits.
+
+# -- Time -------------------------------------------------------------------------------------
+
+# `until` is exclusive, which is why it is not called `max` and why this says "before".
+from = Choose a {$kind} no earlier than {$bound}.
+until = Choose a {$kind} before {$bound}.
+interval = Choose a {$kind} in steps of {$bound}.
+precision = Enter the time to the nearest {$bound}.
+
+# -- Allow and deny lists -----------------------------------------------------------------------
+
+allowedCountries = Choose one of these countries: {$bound}.
+allowedCurrencies = Choose one of these currencies: {$bound}.
+allowedDomains = Use an email address at {$bound}.
+disallowedDomains = Email addresses at {$bound} cannot be used here.
+allowedSchemes = The web address has to start with {$bound}.
+allowedTypes = Upload one of these file types: {$bound}.
+disallowedTypes = That file type cannot be uploaded. Not allowed: {$bound}.
+allowedVersions = Use a version {$bound} identifier.
+
+# -- Text -------------------------------------------------------------------------------------
+
+# Deliberately no {$bound}: the bound is a regular expression, and showing one to somebody filling
+# in a form tells them nothing they can act on. Override this per field to say what you want.
+pattern = That is not in the format this field accepts.
+
+# -- Lists ------------------------------------------------------------------------------------
+
+minCount = Add at least {$bound} of these.
+maxCount = Add no more than {$bound} of these.
+unique = Two of these are the same. Each one has to be different.
+
+# -- Yes or no ---------------------------------------------------------------------------------
+
+accepted = You have to accept this to continue.
+
+# -- Passwords ---------------------------------------------------------------------------------
+
+minStrength = This password is too easy to guess. It needs to be at least {$bound}.
+minUppercaseChars = Include at least {$bound} capital letters.
+minLowercaseChars = Include at least {$bound} lowercase letters.
+minDigits = Include at least {$bound} digits.
+minSymbols = Include at least {$bound} symbols, such as ! or ?.
+
+Password.minLength = Use at least {$bound} characters. A phrase of a few words is easier to remember than a short password and much harder to guess.
+Password.maxLength = That password is longer than {$bound} characters.
+
+# -- Addresses ---------------------------------------------------------------------------------
+
+postalCodeFormat = That is not a valid {$part} for the country you chose.
+administrativeArea = That is not a {$part} we recognise for the country you chose.
+line1Visitable = Enter a street address. A post office box cannot be delivered to in person.
+specific = Include a street or building number, not just the street name.
+
+Address.country.allowedCountries = We can only use addresses in {$bound}.
+
+# -- Phone numbers -------------------------------------------------------------------------------
+
+numberType = Enter a {$bound} number.
+
+PhoneNumber.allowedCountries = Enter a phone number in {$bound}.
+
+# -- Cards ---------------------------------------------------------------------------------------
+
+numberFormat = A card number is 13 to 19 digits.
+numberChecksum = Check the card number. One of the digits is not right.
+expiryFormat = Enter the expiry date as it is printed on the card.
+expiryInFuture = This card has expired.
+expiryWithinReach = An expiry date more than {$bound} years from now is not one a card carries.
+namePresent = Enter the cardholder's name as it is printed on the card.
+securityCodeFormat = The security code is the 3 or 4 digits on the card.
+
+# -- Money ---------------------------------------------------------------------------------------
+
+Money.amount.scale = That currency is not divided into more than {$bound} decimal places.

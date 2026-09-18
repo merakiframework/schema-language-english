@@ -1,0 +1,25 @@
+# meraki/schema — Australian English
+#
+# A variation on en, not a copy of it. Every key absent here is inherited, so this file holds only
+# what Australia says differently: five words out of two hundred entries.
+#
+# The chain comes from the file name. Asking for `en-AU` loads `en.mfr` and lays this over it, key
+# by key. Nothing here declares a parent, because a file that named its own would be free to
+# disagree with what it is called.
+#
+# Note what is *not* here. `postalCodeFormat` reads "That is not a valid {$part} for the country
+# you chose", and because {$part} is resolved through the part.* entries below, redefining
+# `part.postal_code` fixes every message that mentions one. A variant that stays this short is a
+# variant working properly.
+#
+# Note also what does not belong here. This is the language a reader speaks, not the country an
+# address is in — an Australian reader can be entering a New Zealand address — so nothing here may
+# assume that {$bound} is Australia.
+
+@locale = en_AU
+
+part.postal_code = postcode
+part.administrative_area = state
+part.locality = suburb
+part.dependent_locality = locality
+part.organization = organisation

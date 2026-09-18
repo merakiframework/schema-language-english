@@ -1,0 +1,58 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Weekly, so a constraint renamed in meraki/schema surfaces as a stale key here
+    # without waiting for somebody to edit a message.
+    - cron: '0 3 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.5']
+
+    steps:
+      # Both checkouts go into the workspace side by side, because composer.json resolves the dev
+      # dependency as a path repository at ../schema. Swap that for a Packagist constraint once
+      # meraki/schema 2.0 is tagged and this whole dance becomes one `composer install`.
+      - uses: actions/checkout@v4
+        with:
+          path: schema-language-english
+
+      # This package contains no PHP. The dependency is here so schema-lang can read the vocabulary
+      # off the library's own classes and check every message against it — which is what stands in
+      # for a compiler when a package is nothing but data.
+      - uses: actions/checkout@v4
+        with:
+          repository: merakiframework/schema
+          path: schema
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress
+        working-directory: schema-language-english
+
+      - name: Validate composer.json
+        run: composer validate --strict
+        working-directory: schema-language-english
+
+      - name: Check the pack
+        run: vendor/bin/schema-lang validate .
+        working-directory: schema-language-english

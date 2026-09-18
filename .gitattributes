@@ -1,0 +1,4 @@
+# These are read by every implementation of meraki/schema, not only by PHP. Keep them LF so a
+# consumer that is stricter about line endings than this one never has to care where they were
+# edited.
+*.mfr text eol=lf
