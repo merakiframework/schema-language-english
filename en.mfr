@@ -59,7 +59,6 @@ kind.Time = time
 kind.Uri = web address
 kind.Uuid = identifier
 
-part.administrative_area = state or region
 part.amount = amount
 part.country = country
 part.currency = currency
@@ -67,16 +66,15 @@ part.dependent_locality = district
 part.domain = domain
 part.e164 = number
 part.expiry = expiry date
-part.line1 = street address
-part.line2 = second address line
 part.local_part = name before the @
 part.locality = city or town
 part.name = name
 part.number = number
-part.organization = organization
 part.postal_code = postal code
 part.security_code = security code
 part.size = size
+part.street = street address
+part.subdivision = state or region
 part.type = type
 
 # MessageFormat 2 has no :list function, so the library joins a list-valued bound using these.
@@ -110,9 +108,12 @@ maxPrecision = Use no more than {$bound} significant digits.
 
 # -- Time -------------------------------------------------------------------------------------
 
-# `until` is exclusive, which is why it is not called `max` and why this says "before".
+# Four bounds, and the wording carries which end is included. `until` is exclusive, which is why
+# it is not called `max` and why it says "before"; `through` is the inclusive one beside it.
 from = Choose a {$kind} no earlier than {$bound}.
+after = Choose a {$kind} later than {$bound}.
 until = Choose a {$kind} before {$bound}.
+through = Choose a {$kind} no later than {$bound}.
 interval = Choose a {$kind} in steps of {$bound}.
 precision = Enter the time to the nearest {$bound}.
 
@@ -156,10 +157,23 @@ Password.maxLength = That password is longer than {$bound} characters.
 
 # -- Addresses ---------------------------------------------------------------------------------
 
+# Required, used, and the difference between them. A country asks for some parts and has no place
+# for others, and both are read from its own published format — so "we need this" and "there is no
+# such thing here" are different sentences, and only one of them is the reader's fault.
+streetRequired = Enter a street address.
+localityRequired = Enter a {$part}.
+subdivisionRequired = Enter a {$part}.
+postalCodeRequired = Enter a {$part}.
+
+localityUsed = Addresses in that country do not have a {$part}. Leave it empty.
+dependentLocalityUsed = Addresses in that country do not have a {$part}. Leave it empty.
+subdivisionUsed = Addresses in that country do not have a {$part}. Leave it empty.
+postalCodeUsed = Addresses in that country do not have a {$part}. Leave it empty.
+
 postalCodeFormat = That is not a valid {$part} for the country you chose.
-administrativeArea = That is not a {$part} we recognise for the country you chose.
-line1Visitable = Enter a street address. A post office box cannot be delivered to in person.
-specific = Include a street or building number, not just the street name.
+knownSubdivision = That is not a {$part} we recognise for the country you chose.
+streetVisitable = Enter a street address. A post office box cannot be delivered to in person.
+streetLineLimit = An address can have at most {$bound} lines.
 
 Address.country.allowedCountries = We can only use addresses in {$bound}.
 

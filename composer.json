@@ -25,14 +25,8 @@
         "source": "https://github.com/merakiframework/schema-language-english"
     },
     "require": {},
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../schema"
-        }
-    ],
     "require-dev": {
-        "meraki/schema": "@dev"
+        "meraki/schema": "dev-main"
     },
     "scripts": {
         "test": "schema-lang validate .",
