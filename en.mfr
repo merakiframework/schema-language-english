@@ -63,10 +63,7 @@ part.amount = amount
 part.country = country
 part.currency = currency
 part.dependent_locality = district
-part.domain = domain
-part.e164 = number
 part.expiry = expiry date
-part.local_part = name before the @
 part.locality = city or town
 part.name = name
 part.number = number
@@ -177,6 +174,23 @@ streetLineLimit = An address can have at most {$bound} lines.
 
 Address.country.allowedCountries = We can only use addresses in {$bound}.
 
+# -- Parts somebody has not filled in yet ------------------------------------------------------
+
+# A part that was left out is not a part that is wrong, and these are the sentences that say so.
+# They name the part rather than the whole value, so a form marks the box instead of telling
+# somebody their address or their card "is not valid" when they have simply not finished.
+#
+# `numberRequired` belongs to two fields that mean different things by "number", so the generic
+# sentence reads off {$part} and each field says it properly underneath.
+
+numberRequired = Enter a {$part}.
+currencyRequired = Choose a currency.
+amountRequired = Enter an amount.
+expiryRequired = Enter the expiry date as it is printed on the card.
+
+CreditCard.numberRequired = Enter the card number.
+PhoneNumber.numberRequired = Enter a phone number.
+
 # -- Phone numbers -------------------------------------------------------------------------------
 
 numberType = Enter a {$bound} number.
@@ -185,9 +199,11 @@ PhoneNumber.allowedCountries = Enter a phone number in {$bound}.
 
 # -- Cards ---------------------------------------------------------------------------------------
 
+# No `expiryFormat`: an expiry that was given and cannot be read is a shape failure now, the same
+# way a bad amount is, so `CreditCard.shape.unreadable` says it and `expiryRequired` covers the
+# other half.
 numberFormat = A card number is 13 to 19 digits.
 numberChecksum = Check the card number. One of the digits is not right.
-expiryFormat = Enter the expiry date as it is printed on the card.
 expiryInFuture = This card has expired.
 expiryWithinReach = An expiry date more than {$bound} years from now is not one a card carries.
 namePresent = Enter the cardholder's name as it is printed on the card.

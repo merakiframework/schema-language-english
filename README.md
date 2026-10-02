@@ -17,10 +17,12 @@ composer require meraki/schema-language-english
 use Meraki\Schema\Facade;
 use Meraki\Schema\Message\Mf2\Mf2Provider;
 
-$schema = new Facade('signup', messages: Mf2Provider::fromPackage('meraki/schema-language-english'));
+$provider = Mf2Provider::fromPackage('meraki/schema-language-english');
+
+$schema = new Facade('signup');
 $schema->add($schema->createAddressField('billing', ['AU']));
 
-$result = $schema->validate($data, locale: 'en-AU');
+$result = $schema->validate($data, locale: 'en-AU', messages: $provider);
 
 $result->forField('billing')->messages->forPart('postal_code')->first;
 // "That is not a valid postcode for the country you chose."
