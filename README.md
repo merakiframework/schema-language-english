@@ -10,16 +10,20 @@ A sentence is written once and rendered identically wherever the schema is used.
 ## Using it
 
 ```
-composer require meraki/schema-language-english
+composer require meraki/schema-language-english:dev-main
 ```
 
+`dev-main` while `meraki/schema` is in alpha: this pack tracks the library's vocabulary, which is
+still moving, so there is nothing stable to pin to yet. It gets a version of its own — not the
+library's — once `meraki/schema` reaches a real release.
+
 ```php
-use Meraki\Schema\Facade;
+use Meraki\Schema\Definition;
 use Meraki\Schema\Message\Mf2\Mf2Provider;
 
 $provider = Mf2Provider::fromPackage('meraki/schema-language-english');
 
-$schema = new Facade('signup');
+$schema = new Definition('signup');
 $schema->add($schema->createAddressField('billing', ['AU']));
 
 $result = $schema->validate($data, locale: 'en-AU', messages: $provider);
@@ -41,7 +45,7 @@ Mf2Provider::fromPackage('meraki/schema-language-english')
 | | |
 | --- | --- |
 | `en.mfr` | the base: a sentence for every failure the library reports |
-| `en_AU.mfr` | Australian English — five words that differ, and nothing else |
+| `en_AU.mfr` | Australian English — four words that differ, and nothing else |
 
 `en_AU.mfr` is short on purpose. It redefines `part.postal_code` as *postcode*, and every message
 that mentions one follows, because those messages say `{$part}` rather than spelling it out. A
@@ -57,11 +61,15 @@ composer install
 composer test
 ```
 
-which is `schema-lang validate .` — the linter that ships with `meraki/schema`. Since this package
+which is `schema-lang validate . --strict` — the linter that ships with `meraki/schema`. Since this package
 has no code, that is what stands in for a compiler. It reads the vocabulary off the library's own
 classes, so it cannot go stale, and it catches a message using an unimplemented MessageFormat
 feature, a key the library never asks for, and — the one that matters most — a message naming a
 variable nothing will fill, such as `{$minimum}` where the library supplies `{$bound}`.
+
+`--strict` adds the fourth: a key the library *does* ask for that this pack has no wording for.
+Without it an incomplete pack exits 0, which would let a constraint added upstream land here
+silently — the opposite of what the weekly run is for.
 
 `schema-lang keys` lists every key a pack may define and the variables each may name.
 
@@ -79,13 +87,12 @@ Full instructions are in [docs/MESSAGES.md](https://github.com/merakiframework/s
 
 ## Development
 
-The dev dependency currently points at a sibling checkout:
+`meraki/schema` is a dev dependency, pulled from Packagist as `dev-main` — the library ships the
+`schema-lang` linter that checks this pack, and reads the vocabulary off its own classes.
 
-```json
-"repositories": [{ "type": "path", "url": "../schema" }]
-```
-
-Swap that for a version constraint from Packagist once `meraki/schema` 2.0 is tagged.
+`dev-main` rather than a tagged constraint while 2.0 is in alpha, deliberately: the vocabulary is
+still moving, and CI runs weekly so a constraint renamed upstream shows up here without waiting
+for somebody to edit a message. Swap to `^2.0` once the keys stop changing.
 
 ## License
 

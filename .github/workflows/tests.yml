@@ -47,4 +47,4 @@ jobs:
         run: composer validate --strict
 
       - name: Check the pack
-        run: vendor/bin/schema-lang validate .
+        run: vendor/bin/schema-lang validate . --strict

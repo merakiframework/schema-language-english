@@ -29,7 +29,7 @@
         "meraki/schema": "dev-main"
     },
     "scripts": {
-        "test": "schema-lang validate .",
+        "test": "schema-lang validate . --strict",
         "ci": [
             "@composer validate --strict",
             "@test"
