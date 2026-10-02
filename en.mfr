@@ -187,6 +187,7 @@ numberRequired = Enter a {$part}.
 currencyRequired = Choose a currency.
 amountRequired = Enter an amount.
 expiryRequired = Enter the expiry date as it is printed on the card.
+nameRequired = Enter the cardholder's name as it is printed on the card.
 
 CreditCard.numberRequired = Enter the card number.
 PhoneNumber.numberRequired = Enter a phone number.
@@ -206,7 +207,6 @@ numberFormat = A card number is 13 to 19 digits.
 numberChecksum = Check the card number. One of the digits is not right.
 expiryInFuture = This card has expired.
 expiryWithinReach = An expiry date more than {$bound} years from now is not one a card carries.
-namePresent = Enter the cardholder's name as it is printed on the card.
 securityCodeFormat = The security code is the 3 or 4 digits on the card.
 
 # -- Money ---------------------------------------------------------------------------------------
