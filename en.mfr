@@ -188,6 +188,7 @@ currencyRequired = Choose a currency.
 amountRequired = Enter an amount.
 expiryRequired = Enter the expiry date as it is printed on the card.
 nameRequired = Enter the cardholder's name as it is printed on the card.
+countryRequired = Choose a country.
 
 CreditCard.numberRequired = Enter the card number.
 PhoneNumber.numberRequired = Enter a phone number.
