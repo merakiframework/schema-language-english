@@ -184,31 +184,70 @@ Address.country.allowedCountries = We can only use addresses in {$bound}.
 # sentence reads off {$part} and each field says it properly underneath.
 
 numberRequired = Enter a {$part}.
+nameRequired = Enter a {$part}.
 currencyRequired = Choose a currency.
 amountRequired = Enter an amount.
 expiryRequired = Enter the expiry date as it is printed on the card.
-nameRequired = Enter the cardholder's name as it is printed on the card.
 countryRequired = Choose a country.
 
 CreditCard.numberRequired = Enter the card number.
 PhoneNumber.numberRequired = Enter a phone number.
 
+# -- Parts that were sent and cannot be read ---------------------------------------------------
+
+# Not the same as a part left out: something was sent, and it is not a currency, a country or an
+# amount. Each sentence names the one box to fix, because the rest of the value may be fine.
+#
+# `numberFormat` and `nameFormat` belong to more than one field, so the generic sentence reads off
+# {$part} and a field that means something particular by it says so underneath.
+
+currencyFormat = A currency is three letters, such as AUD.
+knownCurrency = That is not a currency we recognise.
+amountFormat = Enter the amount as a number.
+knownCountry = Choose a country from the list.
+numberFormat = That is not a valid {$part}.
+nameFormat = Enter a {$part}.
+streetFormat = Enter a street address.
+localityFormat = Enter a {$part}.
+dependentLocalityFormat = Enter a {$part}.
+
+PhoneNumber.numberFormat = That is not a phone number.
+
 # -- Phone numbers -------------------------------------------------------------------------------
 
 numberType = Enter a {$bound} number.
+
+# The bound is the country's code, which is no help to somebody reading this; the country is the
+# one they chose, so it says that instead.
+numberInCountry = That is not a phone number in the country you chose.
 
 PhoneNumber.allowedCountries = Enter a phone number in {$bound}.
 
 # -- Cards ---------------------------------------------------------------------------------------
 
-# No `expiryFormat`: an expiry that was given and cannot be read is a shape failure now, the same
-# way a bad amount is, so `CreditCard.shape.unreadable` says it and `expiryRequired` covers the
-# other half.
-numberFormat = A card number is 13 to 19 digits.
+# A card is a number and an expiry. The name and the security code are optional unless the field
+# asks for them, which is what `nameRequired` and `securityCodeRequired` mean here.
+CreditCard.numberFormat = A card number is 13 to 19 digits.
 numberChecksum = Check the card number. One of the digits is not right.
+expiryFormat = That is not an expiry date. Enter it as it is printed on the card.
 expiryInFuture = This card has expired.
 expiryWithinReach = An expiry date more than {$bound} years from now is not one a card carries.
 securityCodeFormat = The security code is the 3 or 4 digits on the card.
+securityCodeRequired = Enter the security code: the 3 or 4 digits on the card.
+
+CreditCard.nameRequired = Enter the cardholder's name as it is printed on the card.
+CreditCard.nameFormat = Enter the cardholder's name as it is printed on the card.
+
+# -- Uploads -------------------------------------------------------------------------------------
+
+# A file's name, type and size come from the upload rather than from somebody typing them, so one
+# missing or unreadable means the upload did not arrive whole. Trying again is all a reader can do.
+File.nameRequired = That file did not upload properly. Try again.
+File.nameFormat = That file did not upload properly. Try again.
+typeRequired = That file did not upload properly. Try again.
+typeFormat = That file did not upload properly. Try again.
+sizeRequired = That file did not upload properly. Try again.
+sizeFormat = That file did not upload properly. Try again.
 
 # -- Money ---------------------------------------------------------------------------------------
 

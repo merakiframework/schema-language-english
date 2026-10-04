@@ -19,16 +19,17 @@ library's — once `meraki/schema` reaches a real release.
 
 ```php
 use Meraki\Schema\Definition;
+use Meraki\Schema\Field\Address;
 use Meraki\Schema\Message\Mf2\Mf2Provider;
 
 $provider = Mf2Provider::fromPackage('meraki/schema-language-english');
 
 $schema = new Definition('signup');
-$schema->add($schema->createAddressField('billing', ['AU']));
+$schema->add($billing = $schema->createAddressField('billing', ['AU']));
 
 $result = $schema->validate($data, locale: 'en-AU', messages: $provider);
 
-$result->forField('billing')->messages->forPart('postal_code')->first;
+$billing->resultIn($result)->forPart(Address\Part::PostalCode)->first()?->message;
 // "That is not a valid postcode for the country you chose."
 ```
 
